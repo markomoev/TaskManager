@@ -1,16 +1,23 @@
-// getting express
-const express = require("express")
-const cors = require("cors")
+const express = require("express");
+const app = express();
+const cors = require("cors");
+const pool = require("./database");
 
-// creating the app with all that express provides
-const app = express()
+// MIDDLEWARE
+app.use(cors());
+app.use(express.json());
 
-app.use(express.json())
-app.use(cors())
+// ROUTE IMPORTS
+const authRoutes = require("./routes/auth");
 
-app.get("/adduser", (req, res) => {
-    console.log(req.body)
-    res.send("Response recieved" + req.body)
-})
+// ROUTE USE
+app.use("/auth", authRoutes); 
 
-app.listen(4000, () => console.log("Server on localhost"))
+app.get("/", (req, res) => {
+    res.send("Server is running");
+});
+
+const PORT = 3001;
+app.listen(PORT, () => {
+    console.log(`✅ Server running on port ${PORT}`);
+});
